@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Little Africa - Charter & HR Analytics Portal</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="logo-container">
+                <div class="logo">
+                    <span class="logo-blue">L</span><span class="logo-green">I</span><span class="logo-yellow">T</span><span class="logo-red">T</span><span class="logo-blue">L</span><span class="logo-green">E</span><span class="logo-yellow"> </span><span class="logo-red">A</span><span class="logo-blue">F</span><span class="logo-green">R</span><span class="logo-yellow">I</span><span class="logo-red">C</span><span class="logo-blue">A</span>
+                </div>
+                <h1>Charter & HR Services Analytics Portal</h1>
+            </div>
+            <div class="portal-toggle">
+                <button id="switchPortal" class="toggle-btn">
+                    <i class="fas fa-exchange-alt"></i> Switch to Sales Portal
+                </button>
+            </div>
+        </header>
+
+        <nav class="navbar">
+            <ul>
+                <li><a href="index.html" class="active"><i class="fas fa-home"></i> Overview</a></li>
+                <li><a href="upload.html"><i class="fas fa-upload"></i> Upload</a></li>
+                <li><a href="charter-dashboard.html"><i class="fas fa-building"></i> Charter</a></li>
+                <li><a href="hr-dashboard.html"><i class="fas fa-users"></i> HR</a></li>
+                <li><a href="tele-dashboard.html"><i class="fas fa-phone-alt"></i> Telesales</a></li>
+                <li><a href="team-performance.html"><i class="fas fa-trophy"></i> Team</a></li>
+                <li><a href="reports.html"><i class="fas fa-file-alt"></i> Reports</a></li>
+            </ul>
+        </nav>
+
+        <main class="main-content">
+            <div class="welcome-section">
+                <h2>Welcome to the Charter & HR Analytics Portal</h2>
+                <p>Comprehensive analytics for Charter, HR, and Telesales performance tracking. Upload your Excel data file to get started or explore the dashboards with sample data.</p>
+
+                <div class="action-cards">
+                    <div class="action-card">
+                        <div class="action-icon blue"><i class="fas fa-upload"></i></div>
+                        <h3>Upload Data</h3>
+                        <p>Upload your Excel file with Charter, HR, and Tele data sheets.</p>
+                        <a href="upload.html" class="btn">Go to Upload</a>
+                    </div>
+                    <div class="action-card">
+                        <div class="action-icon green"><i class="fas fa-building"></i></div>
+                        <h3>Charter Dashboard</h3>
+                        <p>View charter revenue, net revenue, associate performance, and YoY growth.</p>
+                        <a href="charter-dashboard.html" class="btn">Charter Analytics</a>
+                    </div>
+                    <div class="action-card">
+                        <div class="action-icon yellow"><i class="fas fa-users"></i></div>
+                        <h3>HR Dashboard</h3>
+                        <p>HR services analytics by business unit with targets and achievements.</p>
+                        <a href="hr-dashboard.html" class="btn">HR Analytics</a>
+                    </div>
+                    <div class="action-card">
+                        <div class="action-icon red"><i class="fas fa-phone-alt"></i></div>
+                        <h3>Telesales Dashboard</h3>
+                        <p>BusBuddy and Taxi meeting analytics by week and month with funnel view.</p>
+                        <a href="tele-dashboard.html" class="btn">Tele Analytics</a>
+                    </div>
+                </div>
+
+                <div class="data-summary">
+                    <h3>Data Structure</h3>
+                    <p>The portal expects an Excel file with three sheets:</p>
+                    <ul>
+                        <li><strong>Sheet 1 (charter):</strong> Monthly revenue by associate with new/existing/busbuddy breakdown, 2025 & 2026 data with targets</li>
+                        <li><strong>Sheet 2 (hr):</strong> HR services revenue — Month, Business, 2026 Target, 2026 Actual</li>
+                        <li><strong>Sheet 3 (tele):</strong> Weekly telesales data — WeekNumber, BusBuddy & Taxi meetings booked/attended/closed/trials</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="quick-stats">
+                <h3>Portal Features</h3>
+                <div class="features">
+                    <div class="feature">
+                        <i class="fas fa-filter blue-text"></i>
+                        <h4>Dynamic Filtering</h4>
+                        <p>Filter by associate, business, month, week, and year</p>
+                    </div>
+                    <div class="feature">
+                        <i class="fas fa-chart-pie green-text"></i>
+                        <h4>Interactive Charts</h4>
+                        <p>Visualize performance with multiple chart types</p>
+                    </div>
+                    <div class="feature">
+                        <i class="fas fa-coins yellow-text"></i>
+                        <h4>Net Revenue KPI</h4>
+                        <p>Charter net revenue calculated at 18% of total revenue</p>
+                    </div>
+                    <div class="feature">
+                        <i class="fas fa-phone-alt red-text"></i>
+                        <h4>Telesales Funnel</h4>
+                        <p>Visual conversion funnel from booked → attended → closed</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <p>Little Africa Charter & HR Analytics Portal &copy; 2025</p>
+            <p>Data processed client-side for privacy.</p>
+        </footer>
+    </div>
+
+    <script src="data-parser.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Telesales Analytics - Little Africa</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="logo-container">
+                <div class="logo">
+                    <span class="logo-blue">L</span><span class="logo-green">I</span><span class="logo-yellow">T</span><span class="logo-red">T</span><span class="logo-blue">L</span><span class="logo-green">E</span><span class="logo-yellow"> </span><span class="logo-red">A</span><span class="logo-blue">F</span><span class="logo-green">R</span><span class="logo-yellow">I</span><span class="logo-red">C</span><span class="logo-blue">A</span>
+                </div>
+                <h1>Telesales Analytics</h1>
+            </div>
+            <div class="portal-toggle">
+                <button id="switchPortal" class="toggle-btn">
+                    <i class="fas fa-exchange-alt"></i> Sales Portal
+                </button>
+            </div>
+        </header>
+
+        <nav class="navbar">
+            <ul>
+                <li><a href="index.html"><i class="fas fa-home"></i> Overview</a></li>
+                <li><a href="upload.html"><i class="fas fa-upload"></i> Upload Data</a></li>
+                <li><a href="charter-dashboard.html"><i class="fas fa-building"></i> Charter</a></li>
+                <li><a href="hr-dashboard.html"><i class="fas fa-users"></i> HR</a></li>
+                <li><a href="tele-dashboard.html" class="active"><i class="fas fa-phone-alt"></i> Telesales</a></li>
+                <li><a href="team-performance.html"><i class="fas fa-trophy"></i> Team</a></li>
+                <li><a href="reports.html"><i class="fas fa-file-alt"></i> Reports</a></li>
+            </ul>
+        </nav>
+
+        <main class="main-content">
+            <div class="dashboard-header">
+                <h2><i class="fas fa-phone-alt" style="color:var(--blue)"></i> Telesales Performance Analytics</h2>
+                <div class="filters">
+                    <div class="filter-group">
+                        <label for="monthFilter"><i class="fas fa-calendar"></i> Month</label>
+                        <select id="monthFilter">
+                            <option value="All">All Months</option>
+                            <option value="January">January</option>
+                            <option value="February">February</option>
+                            <option value="March">March</option>
+                            <option value="April">April</option>
+                            <option value="May">May</option>
+                            <option value="June">June</option>
+                            <option value="July">July</option>
+                            <option value="August">August</option>
+                            <option value="September">September</option>
+                            <option value="October">October</option>
+                            <option value="November">November</option>
+                            <option value="December">December</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label for="weekFilter"><i class="fas fa-calendar-week"></i> Week</label>
+                        <select id="weekFilter">
+                            <option value="All">All Weeks</option>
+                        </select>
+                    </div>
+                    <button id="applyFilters" class="btn"><i class="fas fa-filter"></i> Apply</button>
+                    <button id="resetFilters" class="btn" style="background-color:var(--dark-gray)"><i class="fas fa-redo"></i> Reset</button>
+                </div>
+            </div>
+
+            <!-- KPI Cards -->
+            <div class="stats-container tele-stats">
+                <div class="stat-card blue">
+                    <h3><i class="fas fa-handshake"></i> BUSBUDDY BOOKED</h3>
+                    <div class="stat-value" id="bbBooked">0</div>
+                    <p>Total meetings booked</p>
+                    <div class="stat-change" id="bbBookedRate"><i class="fas fa-chart-line"></i> —</div>
+                </div>
+                <div class="stat-card green">
+                    <h3><i class="fas fa-user-check"></i> BUSBUDDY ATTENDED</h3>
+                    <div class="stat-value" id="bbAttended">0</div>
+                    <p>Attendance rate: <span id="bbAttendRate">0%</span></p>
+                    <div class="stat-change positive" id="bbAttendChange"><i class="fas fa-chart-line"></i> —</div>
+                </div>
+                <div class="stat-card yellow">
+                    <h3><i class="fas fa-vial"></i> BUSBUDDY TRIALS</h3>
+                    <div class="stat-value" id="bbTrials">0</div>
+                    <p>Trials from attended</p>
+                    <div class="stat-change" id="bbTrialsRate"><i class="fas fa-chart-line"></i> —</div>
+                </div>
+                <div class="stat-card" style="border-top:4px solid #9c27b0;">
+                    <h3><i class="fas fa-taxi" style="color:#9c27b0"></i> TAXI BOOKED</h3>
+                    <div class="stat-value" id="taxiBooked" style="color:#9c27b0">0</div>
+                    <p>Total meetings booked</p>
+                    <div class="stat-change" id="taxiBookedRate"><i class="fas fa-chart-line"></i> —</div>
+                </div>
+                <div class="stat-card red">
+                    <h3><i class="fas fa-check-circle"></i> TAXI CLOSED</h3>
+                    <div class="stat-value" id="taxiClosed">0</div>
+                    <p>Close rate: <span id="taxiCloseRate">0%</span></p>
+                    <div class="stat-change" id="taxiClosedChange"><i class="fas fa-chart-line"></i> —</div>
+                </div>
+                <div class="stat-card" style="border-top:4px solid #00bcd4;">
+                    <h3><i class="fas fa-percentage" style="color:#00bcd4"></i> OVERALL CLOSE RATE</h3>
+                    <div class="stat-value" id="overallCloseRate" style="color:#00bcd4">0%</div>
+                    <p>Booked → Closed</p>
+                    <div class="stat-change" id="closeRateChange"><i class="fas fa-chart-line"></i> —</div>
+                </div>
+            </div>
+
+            <!-- Funnel Summary -->
+            <div class="tele-funnel-section" id="funnelSection">
+                <h3><i class="fas fa-filter blue-text"></i> Conversion Funnel</h3>
+                <div class="funnel-wrapper">
+                    <div class="funnel-item" id="funnel-booked">
+                        <div class="funnel-bar" style="background:linear-gradient(135deg,#1a73e8,#0d47a1)">
+                            <span class="funnel-label">Total Booked</span>
+                            <span class="funnel-val" id="funnelBooked">0</span>
+                        </div>
+                    </div>
+                    <div class="funnel-arrow"><i class="fas fa-chevron-down"></i></div>
+                    <div class="funnel-item" id="funnel-attended">
+                        <div class="funnel-bar" style="background:linear-gradient(135deg,#34a853,#1b5e20)">
+                            <span class="funnel-label">Attended</span>
+                            <span class="funnel-val" id="funnelAttended">0</span>
+                        </div>
+                    </div>
+                    <div class="funnel-arrow"><i class="fas fa-chevron-down"></i></div>
+                    <div class="funnel-item" id="funnel-closed">
+                        <div class="funnel-bar" style="background:linear-gradient(135deg,#ea4335,#b71c1c)">
+                            <span class="funnel-label">Closed / Trials</span>
+                            <span class="funnel-val" id="funnelClosed">0</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Charts -->
+            <div class="charts-container">
+                <div class="chart-card">
+                    <h3><i class="fas fa-chart-bar blue-text"></i> Weekly BusBuddy Activity</h3>
+                    <div class="chart-container"><canvas id="bbWeeklyChart"></canvas></div>
+                </div>
+                <div class="chart-card">
+                    <h3><i class="fas fa-chart-bar red-text"></i> Weekly Taxi Activity</h3>
+                    <div class="chart-container"><canvas id="taxiWeeklyChart"></canvas></div>
+                </div>
+                <div class="chart-card">
+                    <h3><i class="fas fa-chart-line green-text"></i> Monthly Trend — All Activities</h3>
+                    <div class="chart-container"><canvas id="monthlyTrendChart"></canvas></div>
+                </div>
+                <div class="chart-card">
+                    <h3><i class="fas fa-chart-pie yellow-text"></i> Activity Distribution</h3>
+                    <div class="chart-container"><canvas id="distributionChart"></canvas></div>
+                </div>
+            </div>
+
+            <!-- Data Table -->
+            <div class="data-table-container">
+                <h3><i class="fas fa-table blue-text"></i> Weekly Telesales Detail</h3>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Week</th>
+                            <th>Month</th>
+                            <th>BB Booked</th>
+                            <th>BB Attended</th>
+                            <th>BB Trials</th>
+                            <th>BB Attend Rate</th>
+                            <th>Taxi Booked</th>
+                            <th>Taxi Attended</th>
+                            <th>Taxi Closed</th>
+                            <th>Taxi Close Rate</th>
+                        </tr>
+                    </thead>
+                    <tbody id="teleTableBody">
+                        <tr><td colspan="10" style="text-align:center;padding:40px">
+                            <i class="fas fa-database" style="font-size:3rem;color:#ccc;display:block;margin-bottom:15px"></i>
+                            <h4>No Tele Data Loaded</h4>
+                            <p>Upload an Excel file with a "tele" sheet</p>
+                            <a href="upload.html" class="btn" style="margin-top:15px"><i class="fas fa-upload"></i> Upload Data</a>
+                        </td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div style="background:var(--light-blue);padding:15px;border-radius:var(--radius);margin-bottom:30px">
+                <p><i class="fas fa-info-circle blue-text"></i> <strong>Last Update:</strong> <span id="lastUpdate">Never</span></p>
+                <p>Month is inferred from week number. Weeks 1–4 = Jan, 5–8 = Feb, etc.</p>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <p>Little Africa Telesales Analytics &copy; 2025</p>
+        </footer>
+    </div>
+
+    <script src="data-parser.js"></script>
+    <script src="tele-dashboard.js"></script>
+</body>
+</html>
