@@ -1,0 +1,348 @@
+/* ============================================================
+   theme-extras.css
+   Little Africa Analytics Portal
+   - Dark / Light theme variables
+   - Scrollable table wrapper
+   ============================================================ */
+
+/* ---- Light theme defaults (matches existing styles.css palette) ---- */
+:root,
+[data-theme="light"] {
+    --bg-body:          #f5f7fa;
+    --bg-container:     #ffffff;
+    --bg-header:        #ffffff;
+    --bg-navbar:        #1a73e8;
+    --bg-card:          #ffffff;
+    --bg-table-head:    #f1f3f4;
+    --bg-table-row-alt: #f8f9fa;
+    --bg-input:         #ffffff;
+    --bg-filter:        #f8f9fa;
+
+    --text-primary:     #202124;
+    --text-secondary:   #5f6368;
+    --text-navbar:      #ffffff;
+    --text-muted:       #80868b;
+
+    --border-color:     #dadce0;
+    --shadow:           0 2px 10px rgba(0,0,0,0.08);
+    --shadow-card:      0 1px 6px rgba(0,0,0,0.08);
+
+    --surface-2:        #f1f3f4;
+    --hover-bg:         #f1f3f4;
+    --table-hover:      #f0f6ff;
+
+    /* These map to your existing CSS custom props used in styles.css */
+    --light-blue:       #e8f0fe;
+    --dark-gray:        #5f6368;
+}
+
+/* ---- Dark theme overrides ---- */
+[data-theme="dark"] {
+    --bg-body:          #111318;
+    --bg-container:     #1c1e24;
+    --bg-header:        #1c1e24;
+    --bg-navbar:        #0d1117;
+    --bg-card:          #252830;
+    --bg-table-head:    #2a2d36;
+    --bg-table-row-alt: #202328;
+    --bg-input:         #2a2d36;
+    --bg-filter:        #252830;
+
+    --text-primary:     #e8eaed;
+    --text-secondary:   #9aa0a6;
+    --text-navbar:      #e8eaed;
+    --text-muted:       #80868b;
+
+    --border-color:     #3c4049;
+    --shadow:           0 2px 14px rgba(0,0,0,0.45);
+    --shadow-card:      0 2px 8px rgba(0,0,0,0.4);
+
+    --surface-2:        #2a2d36;
+    --hover-bg:         #2e3138;
+    --table-hover:      #2a3550;
+
+    --light-blue:       #1a2540;
+    --dark-gray:        #9aa0a6;
+}
+
+/* ---- Apply theme variables to core layout elements ---- */
+body {
+    background-color: var(--bg-body) !important;
+    color: var(--text-primary) !important;
+    transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+.container {
+    background-color: var(--bg-body) !important;
+}
+
+.header {
+    background-color: var(--bg-header) !important;
+    box-shadow: var(--shadow) !important;
+    color: var(--text-primary) !important;
+}
+
+.header h1,
+.header .logo {
+    color: var(--text-primary) !important;
+}
+
+.navbar {
+    background-color: var(--bg-navbar) !important;
+}
+
+/* Stat / KPI cards */
+.stat-card {
+    background-color: var(--bg-card) !important;
+    box-shadow: var(--shadow-card) !important;
+    color: var(--text-primary) !important;
+    transition: background-color 0.25s ease;
+}
+
+.stat-card h3 {
+    color: var(--text-secondary) !important;
+}
+
+.stat-card p {
+    color: var(--text-secondary) !important;
+}
+
+/* Chart cards */
+.chart-card {
+    background-color: var(--bg-card) !important;
+    box-shadow: var(--shadow-card) !important;
+    color: var(--text-primary) !important;
+}
+
+.chart-card h3 {
+    color: var(--text-primary) !important;
+}
+
+/* Data table container */
+.data-table-container {
+    background-color: var(--bg-card) !important;
+    box-shadow: var(--shadow-card) !important;
+}
+
+.data-table-container h3 {
+    color: var(--text-primary) !important;
+}
+
+/* Table itself */
+.data-table {
+    background-color: var(--bg-card) !important;
+    color: var(--text-primary) !important;
+}
+
+.data-table thead th {
+    background-color: var(--bg-table-head) !important;
+    color: var(--text-primary) !important;
+    border-bottom: 2px solid var(--border-color) !important;
+}
+
+.data-table tbody tr {
+    border-bottom: 1px solid var(--border-color) !important;
+    color: var(--text-primary) !important;
+}
+
+.data-table tbody tr:nth-child(even) {
+    background-color: var(--bg-table-row-alt) !important;
+}
+
+.data-table tbody tr:hover {
+    background-color: var(--table-hover) !important;
+}
+
+.data-table td {
+    color: var(--text-primary) !important;
+}
+
+/* Filters / dashboard header */
+.dashboard-header {
+    background-color: var(--bg-card) !important;
+    box-shadow: var(--shadow-card) !important;
+}
+
+.dashboard-header h2 {
+    color: var(--text-primary) !important;
+}
+
+.filter-group label {
+    color: var(--text-secondary) !important;
+}
+
+select,
+input[type="text"],
+input[type="search"] {
+    background-color: var(--bg-input) !important;
+    color: var(--text-primary) !important;
+    border-color: var(--border-color) !important;
+}
+
+select option {
+    background-color: var(--bg-input) !important;
+    color: var(--text-primary) !important;
+}
+
+/* Funnel section */
+.tele-funnel-section {
+    background-color: var(--bg-card) !important;
+    box-shadow: var(--shadow-card) !important;
+    color: var(--text-primary) !important;
+}
+
+.tele-funnel-section h3 {
+    color: var(--text-primary) !important;
+}
+
+/* Info banner (light-blue box) */
+[style*="background:var(--light-blue)"],
+[style*="background: var(--light-blue)"] {
+    background-color: var(--light-blue) !important;
+    color: var(--text-primary) !important;
+}
+
+/* Footer */
+.footer {
+    background-color: var(--bg-navbar) !important;
+    color: var(--text-navbar) !important;
+}
+
+/* Main content area */
+.main-content {
+    background-color: var(--bg-body) !important;
+}
+
+/* Section dividers */
+[style*="border-top:3px solid"] {
+    border-color: var(--border-color) !important;
+}
+
+/* HR2 funnel wrapper */
+.funnel-wrapper {
+    background-color: transparent !important;
+}
+
+/* hr2-funnel container */
+.hr2-funnel {
+    background-color: var(--bg-filter) !important;
+}
+
+/* Toggle button style in dark mode */
+[data-theme="dark"] .theme-toggle-btn {
+    background: var(--surface-2) !important;
+    color: var(--text-primary) !important;
+    border-color: var(--border-color) !important;
+}
+
+[data-theme="dark"] .toggle-btn {
+    background: var(--surface-2) !important;
+    color: var(--text-primary) !important;
+    border: 1px solid var(--border-color) !important;
+}
+
+/* ============================================================
+   SCROLLABLE TABLE WRAPPER
+   Constrains table height so it scrolls rather than expanding
+   ============================================================ */
+.table-scroll-wrap {
+    width: 100%;
+    max-height: 420px;          /* show ~8-10 rows, rest scrollable */
+    overflow-y: auto;
+    overflow-x: auto;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    background-color: var(--bg-card);
+
+    /* Custom scrollbar - subtle */
+    scrollbar-width: thin;
+    scrollbar-color: var(--border-color) transparent;
+}
+
+.table-scroll-wrap::-webkit-scrollbar {
+    width: 7px;
+    height: 7px;
+}
+.table-scroll-wrap::-webkit-scrollbar-track {
+    background: transparent;
+}
+.table-scroll-wrap::-webkit-scrollbar-thumb {
+    background-color: var(--border-color);
+    border-radius: 4px;
+}
+
+/* Sticky header inside scrollable wrapper */
+.table-scroll-wrap .data-table thead th {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    background-color: var(--bg-table-head) !important;
+    box-shadow: 0 1px 0 var(--border-color);
+}
+
+/* Make sure table takes full width inside wrapper */
+.table-scroll-wrap .data-table {
+    width: 100%;
+    min-width: 600px;   /* prevents squishing on small screens */
+    border-collapse: collapse;
+    margin: 0;
+}
+
+/* Remove outer border-radius on table since wrapper has it */
+.data-table-container .table-scroll-wrap + * ,
+.table-scroll-wrap .data-table {
+    border-radius: 0;
+}
+
+/* ============================================================
+   Charter dashboard associate table scrollable (if no wrapper)
+   ============================================================ */
+#performanceTable {
+    min-width: 700px;
+}
+
+/* General text visibility fixes for dark mode */
+[data-theme="dark"] h1,
+[data-theme="dark"] h2,
+[data-theme="dark"] h3,
+[data-theme="dark"] h4,
+[data-theme="dark"] p,
+[data-theme="dark"] span,
+[data-theme="dark"] label {
+    color: var(--text-primary);
+}
+
+[data-theme="dark"] a {
+    color: #8ab4f8;
+}
+
+[data-theme="dark"] a:hover {
+    color: #aecbfa;
+}
+
+/* Stat change badges */
+[data-theme="dark"] .stat-change.positive {
+    color: #34a853 !important;
+}
+[data-theme="dark"] .stat-change.negative {
+    color: #ea4335 !important;
+}
+
+/* Upload page / index page cards */
+.feature-card,
+.step-card,
+.info-card {
+    background-color: var(--bg-card) !important;
+    box-shadow: var(--shadow-card) !important;
+    color: var(--text-primary) !important;
+}
+
+/* Smooth transitions */
+.stat-card,
+.chart-card,
+.data-table-container,
+.dashboard-header,
+.tele-funnel-section,
+.feature-card {
+    transition: background-color 0.25s ease, box-shadow 0.25s ease;
+}
