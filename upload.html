@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Data - Charter & HR Analytics</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="theme-extras.css">
+    <script>(function(){ var t=localStorage.getItem('la_theme')||'light'; document.documentElement.setAttribute('data-theme',t); })();</script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="logo-container">
+                <div class="logo">
+                    <span class="logo-blue">L</span>
+                    <span class="logo-green">I</span>
+                    <span class="logo-yellow">T</span>
+                    <span class="logo-red">T</span>
+                    <span class="logo-blue">L</span>
+                    <span class="logo-green">E</span>
+                    <span class="logo-yellow"> </span>
+                    <span class="logo-red">A</span>
+                    <span class="logo-blue">F</span>
+                    <span class="logo-green">R</span>
+                    <span class="logo-yellow">I</span>
+                    <span class="logo-red">C</span>
+                    <span class="logo-blue">A</span>
+                </div>
+                <h1>Upload Data</h1>
+            </div>
+            <div class="portal-toggle">
+                <button id="switchPortal" class="toggle-btn">
+                    <i class="fas fa-exchange-alt"></i> Switch to Sales Portal
+                </button>
+            </div>
+        </header>
+        
+        <nav class="navbar">
+            <ul>
+                <li><a href="index.html"><i class="fas fa-home"></i> Overview</a></li>
+                <li><a href="upload.html" class="active"><i class="fas fa-upload"></i> Upload Data</a></li>
+                <li><a href="charter-dashboard.html"><i class="fas fa-building"></i> Charter Dashboard</a></li>
+                <li><a href="hr-dashboard.html"><i class="fas fa-users"></i> HR Dashboard</a></li>
+                <li><a href="tele-dashboard.html"><i class="fas fa-phone-alt"></i> Telesales</a></li>
+                <li><a href="team-performance.html"><i class="fas fa-trophy"></i> Team Performance</a></li>
+                <li><a href="reports.html"><i class="fas fa-file-alt"></i> Reports</a></li>
+            </ul>
+        </nav>
+        
+        <main class="main-content">
+            <div class="upload-container">
+
+                <!-- ===== GOOGLE SHEETS SECTION (Primary) ===== -->
+                <div style="background:var(--bg-card,#fff);border-radius:12px;padding:28px;margin-bottom:28px;box-shadow:var(--shadow-card);border-left:5px solid var(--blue,#1a73e8)">
+                    <h2 style="margin:0 0 6px">
+                        <i class="fab fa-google" style="color:#4285f4;margin-right:8px"></i>
+                        Google Sheets Data Source
+                    </h2>
+                    <p style="color:var(--text-secondary);margin:0 0 20px;font-size:0.9rem">
+                        Your portal is connected to a live Google Sheet. Data refreshes automatically every 5 minutes on each dashboard.
+                    </p>
+
+                    <!-- Status card -->
+                    <div id="sheetsStatusCard" style="
+                        display:flex;align-items:center;gap:14px;padding:16px 20px;
+                        border-radius:8px;background:var(--surface-2,#f1f3f4);margin-bottom:20px;
+                    ">
+                        <div id="sheetsStatusDot" style="width:12px;height:12px;border-radius:50%;background:#34a853;flex-shrink:0"></div>
+                        <div style="flex:1">
+                            <div style="font-weight:600;font-size:0.92rem" id="sheetsStatusTitle">Connected</div>
+                            <div style="font-size:0.82rem;color:var(--text-secondary)" id="sheetsStatusSub">Last synced: <span id="sheetsLastSync">—</span></div>
+                        </div>
+                        <button id="sheetsSyncNowBtn" class="btn" style="background:var(--blue,#1a73e8);padding:8px 18px;font-size:0.85rem">
+                            <i class="fas fa-sync-alt" id="sheetsSyncIcon"></i> Sync Now
+                        </button>
+                    </div>
+
+                    <!-- Progress bar (hidden by default) -->
+                    <div id="sheetsProgress" style="display:none;margin-bottom:16px">
+                        <div style="display:flex;justify-content:space-between;margin-bottom:6px;font-size:0.82rem">
+                            <span id="sheetsProgressMsg">Loading…</span>
+                            <span id="sheetsProgressPct">0%</span>
+                        </div>
+                        <div style="background:var(--border-color,#dadce0);border-radius:4px;height:8px;overflow:hidden">
+                            <div id="sheetsProgressBar" style="height:100%;width:0%;background:linear-gradient(90deg,#1a73e8,#34a853);transition:width 0.3s"></div>
+                        </div>
+                    </div>
+
+                    <!-- Success / Error message -->
+                    <div id="sheetsResult" style="display:none;padding:14px 18px;border-radius:8px;font-size:0.88rem"></div>
+
+                    <!-- Loaded summary -->
+                    <div id="sheetsSummary" style="display:none;margin-top:16px">
+                        <h4 style="margin:0 0 10px"><i class="fas fa-table green-text"></i> Data Loaded</h4>
+                        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px" id="sheetsSummaryGrid"></div>
+                        <div style="margin-top:16px;display:flex;flex-wrap:wrap;gap:8px">
+                            <a href="charter-dashboard.html" class="btn" style="background:var(--blue,#1a73e8)"><i class="fas fa-building"></i> Charter</a>
+                            <a href="hr-dashboard.html" class="btn" style="background:var(--green,#34a853)"><i class="fas fa-users"></i> HR</a>
+                            <a href="tele-dashboard.html" class="btn" style="background:#9c27b0"><i class="fas fa-phone-alt"></i> Telesales</a>
+                            <a href="team-performance.html" class="btn" style="background:var(--yellow,#fbbc04);color:#333"><i class="fas fa-trophy"></i> Team</a>
+                            <a href="reports.html" class="btn" style="background:var(--red,#ea4335)"><i class="fas fa-file-alt"></i> Reports</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ===== EXCEL FALLBACK SECTION ===== -->
+                <details style="background:var(--bg-card,#fff);border-radius:12px;padding:24px;box-shadow:var(--shadow-card);margin-bottom:28px">
+                    <summary style="cursor:pointer;font-weight:600;font-size:1rem;list-style:none;display:flex;align-items:center;gap:8px">
+                        <i class="fas fa-file-excel" style="color:#1d6f42"></i>
+                        Upload Excel File (Alternative / Offline)
+                        <i class="fas fa-chevron-down" style="margin-left:auto;font-size:0.8rem;color:var(--text-secondary)"></i>
+                    </summary>
+
+                    <div style="margin-top:20px">
+                        <p style="color:var(--text-secondary);font-size:0.88rem;margin-bottom:16px">
+                            Use this if you need to load data offline or from a different file. This will override the Google Sheets data until the next auto-sync.
+                        </p>
+                        <div class="upload-area" id="uploadArea">
+                            <div class="upload-icon"><i class="fas fa-cloud-upload-alt"></i></div>
+                            <h3>Drag & Drop Your Excel File Here</h3>
+                            <p>or click to browse</p>
+                            <input type="file" id="fileInput" accept=".xlsx, .xls" hidden>
+                            <div class="upload-btn" id="browseBtn">Browse Files</div>
+                            <p class="file-types">Supported formats: .xlsx, .xls</p>
+                        </div>
+                        <div class="file-info" id="fileInfo">
+                            <h4><i class="fas fa-file-excel green-text"></i> File Selected: <span id="fileName"></span></h4>
+                            <p>Size: <span id="fileSize"></span> | Last Modified: <span id="fileModified"></span></p>
+                            <p>Sheets Detected: <span id="sheetCount"></span></p>
+                            <div id="sheetInfo"></div>
+                            <button id="processFile" class="btn" style="margin-top:15px">
+                                <i class="fas fa-cogs"></i> Process & Update Dashboard
+                            </button>
+                        </div>
+                        <div id="processingStatus" style="display:none;margin-top:20px;padding:16px;background:var(--light-blue);border-radius:8px">
+                            <h4><i class="fas fa-sync fa-spin"></i> Processing…</h4>
+                            <div style="height:8px;background:#e0e0e0;border-radius:4px;margin:12px 0;overflow:hidden">
+                                <div id="progressFill" style="height:100%;width:0%;background:var(--blue);transition:width 0.3s"></div>
+                            </div>
+                            <p id="statusText">Reading Excel file…</p>
+                        </div>
+                        <div id="successMessage" style="display:none;margin-top:20px;padding:16px;background:var(--light-green,#e6f4ea);border-radius:8px;border-left:4px solid var(--green)">
+                            <h4><i class="fas fa-check-circle green-text"></i> File Processed Successfully!</h4>
+                            <p>Data loaded from Excel. Dashboards updated.</p>
+                        </div>
+                    </div>
+                </details>
+
+                <!-- ===== SHEET FORMAT REFERENCE ===== -->
+                <details style="background:var(--bg-card,#fff);border-radius:12px;padding:24px;box-shadow:var(--shadow-card)">
+                    <summary style="cursor:pointer;font-weight:600;font-size:1rem;list-style:none;display:flex;align-items:center;gap:8px">
+                        <i class="fas fa-info-circle" style="color:var(--blue)"></i>
+                        Sheet Format Reference
+                        <i class="fas fa-chevron-down" style="margin-left:auto;font-size:0.8rem;color:var(--text-secondary)"></i>
+                    </summary>
+                    <div style="margin-top:16px;font-size:0.88rem">
+                        <h4>Sheet: <code>charter</code></h4>
+                        <p>Month, Associate, new business revenue_2025, existing business revenue_2025, busbuddy revenue_2025, Total Revenue_2025, new business revenue_2026, existing business revenue_2026, busbuddy revenue_2026, Total Revenue_2026, Target 2026</p>
+                        <h4 style="margin-top:14px">Sheet: <code>hr</code></h4>
+                        <p>Month, Business, 2025 New Revenue, 2025 Actual, 2026 Corporate Closures, 2026 New Revenue, 2026 Old Revenue, 2026 Total Revenue, 2026 Target</p>
+                        <h4 style="margin-top:14px">Sheet: <code>hr2</code></h4>
+                        <p>WeekNumber, hr_meetings_booked, hrms_meetings_booked, meetings_attended, hr_free_trials, hr_free_trials_target, hr_closed</p>
+                        <h4 style="margin-top:14px">Sheet: <code>tele</code></h4>
+                        <p>WeekNumber, BusBuddy_meetings_booked, BusBuddy_meetings_attended, BusBuddy_trials, Taxi_meetings_booked, Taxi_meetings_attended, Taxi_meetings_closed</p>
+                    </div>
+                </details>
+
+            </div>
+        </main>
+        
+        <footer class="footer">
+            <p>Little Africa Charter & HR Analytics Portal &copy; 2025</p>
+            <p>Data updates automatically upon file upload. All data is processed client-side for privacy.</p>
+        </footer>
+    </div>
+    
+    <script src="data-parser.js"></script>
+    <script src="script.js"></script>
+    <script src="chatbot.js"></script>
+    <script src="theme.js"></script>
+    <script>
+    // ---- Google Sheets Sync (Upload Page) ----
+    const SHEETS_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vR6Mt_7HSm1uNjf5UCymYcxXyqHF6YLOIn_EsCq9K05vtGFMA9SSBYqRqDE7ybYjdVLxXO6ZosOmh2F';
+
+    function setSheetStatus(title, subtitle, dotColor) {
+        const t = document.getElementById('sheetsStatusTitle');
+        const s = document.getElementById('sheetsStatusSub');
+        const d = document.getElementById('sheetsStatusDot');
+        if (t) t.textContent = title;
+        if (s) s.innerHTML = subtitle;
+        if (d) d.style.background = dotColor;
+    }
+
+    function setProgress(pct, msg, show) {
+        const wrap = document.getElementById('sheetsProgress');
+        const bar  = document.getElementById('sheetsProgressBar');
+        const pctEl = document.getElementById('sheetsProgressPct');
+        const msgEl = document.getElementById('sheetsProgressMsg');
+        if (wrap) wrap.style.display = show ? 'block' : 'none';
+        if (bar)  bar.style.width = pct + '%';
+        if (pctEl) pctEl.textContent = pct + '%';
+        if (msgEl) msgEl.textContent = msg;
+    }
+
+    function showResult(html, isError) {
+        const el = document.getElementById('sheetsResult');
+        if (!el) return;
+        el.style.display = 'block';
+        el.style.background = isError ? '#fdecea' : '#e6f4ea';
+        el.style.borderLeft = `4px solid ${isError ? '#ea4335' : '#34a853'}`;
+        el.innerHTML = html;
+    }
+
+    function showSummary(result) {
+        const el = document.getElementById('sheetsSummary');
+        const grid = document.getElementById('sheetsSummaryGrid');
+        if (!el || !grid) return;
+        el.style.display = 'block';
+        const items = [
+            { label: 'Charter Rows', val: result.charterRows, icon: 'fa-building', color: '#1a73e8' },
+            { label: 'HR Rows',      val: result.hrRows,      icon: 'fa-users',    color: '#34a853' },
+            { label: 'HR2 Rows',     val: result.hr2Rows,     icon: 'fa-calendar', color: '#9c27b0' },
+            { label: 'Tele Rows',    val: result.teleRows,    icon: 'fa-phone-alt',color: '#ea4335' },
+        ];
+        grid.innerHTML = items.map(it => `
+            <div style="background:var(--surface-2,#f1f3f4);border-radius:8px;padding:12px 16px;display:flex;align-items:center;gap:10px">
+                <i class="fas ${it.icon}" style="color:${it.color};font-size:1.2rem"></i>
+                <div>
+                    <div style="font-weight:700;font-size:1.1rem">${it.val}</div>
+                    <div style="font-size:0.78rem;color:var(--text-secondary)">${it.label}</div>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    async function syncFromSheets() {
+        const btn = document.getElementById('sheetsSyncNowBtn');
+        const icon = document.getElementById('sheetsSyncIcon');
+        if (btn) btn.disabled = true;
+        if (icon) icon.classList.add('fa-spin');
+
+        document.getElementById('sheetsResult').style.display = 'none';
+        setProgress(0, 'Connecting to Google Sheets…', true);
+        setSheetStatus('Syncing…', 'Fetching latest data from Google Sheets', '#fbbc04');
+
+        try {
+            const result = await dataParser.fetchFromGoogleSheets(SHEETS_URL, (pct, msg) => {
+                setProgress(pct, msg, true);
+            });
+
+            setProgress(100, 'Complete!', true);
+            setTimeout(() => setProgress(0, '', false), 1500);
+
+            const now = new Date().toLocaleString();
+            setSheetStatus('Synced ✓', `Last synced: <span id="sheetsLastSync">${now}</span>`, '#34a853');
+            showResult(`<i class="fas fa-check-circle" style="color:#34a853;margin-right:6px"></i>
+                <strong>Sync complete!</strong> Loaded ${result.charterRows} charter rows, ${result.hrRows} HR rows,
+                ${result.hr2Rows} HR2 rows, ${result.teleRows} tele rows.
+                <br><small style="color:var(--text-secondary);margin-top:6px;display:block">
+                    Sheet GIDs discovered — charter: <code>${result.gids?.charter||'?'}</code>,
+                    hr: <code>${result.gids?.hr||'?'}</code>,
+                    hr2: <code>${result.gids?.hr2||'?'}</code>,
+                    tele: <code>${result.gids?.tele||'?'}</code>
+                </small>`, false);
+            showSummary(result);
+        } catch (err) {
+            setProgress(0, '', false);
+            setSheetStatus('Sync Failed', 'Could not reach Google Sheets', '#ea4335');
+            showResult(`<i class="fas fa-exclamation-triangle" style="color:#ea4335;margin-right:6px"></i>
+                <strong>Sync failed:</strong> ${err.message}. Check that the sheet is published to the web.`, true);
+        }
+
+        if (btn) btn.disabled = false;
+        if (icon) icon.classList.remove('fa-spin');
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const btn = document.getElementById('sheetsSyncNowBtn');
+        if (btn) btn.addEventListener('click', syncFromSheets);
+
+        // Show last sync time if available
+        const lastUpdate = localStorage.getItem('lastDataUpdate');
+        const syncEl = document.getElementById('sheetsLastSync');
+        if (lastUpdate && syncEl) {
+            syncEl.textContent = new Date(lastUpdate).toLocaleString();
+        }
+
+        // Auto-sync on page load if no data or data is stale
+        const dataSource = localStorage.getItem('dataSource');
+        const stale = !lastUpdate || (Date.now() - new Date(lastUpdate).getTime()) > 10 * 60 * 1000;
+        if (stale || dataSource === 'google-sheets') {
+            syncFromSheets();
+        } else {
+            setSheetStatus('Connected', `Last synced: <span id="sheetsLastSync">${lastUpdate ? new Date(lastUpdate).toLocaleString() : '—'}</span>`, '#34a853');
+        }
+    });
+    </script>
+
+</body>
+</html>
